@@ -26,7 +26,7 @@ RETURNING id, email, password_hash, name, avatar_url, is_active, created_at, upd
 type CreateUserParams struct {
 	Email        string      `json:"email"`
 	PasswordHash string      `json:"password_hash"`
-	Name         pgtype.Text `json:"name"`
+	Name         string      `json:"name"`
 	AvatarUrl    pgtype.Text `json:"avatar_url"`
 }
 
@@ -121,7 +121,7 @@ RETURNING id, email, password_hash, name, avatar_url, is_active, created_at, upd
 type UpdateUserParams struct {
 	ID        pgtype.UUID `json:"id"`
 	Email     string      `json:"email"`
-	Name      pgtype.Text `json:"name"`
+	Name      string      `json:"name"`
 	AvatarUrl pgtype.Text `json:"avatar_url"`
 }
 

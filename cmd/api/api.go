@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -27,9 +28,11 @@ func (app *application) mount() http.Handler {
 
 	queries := repo.New(app.db)
 
-	authService := auth.NewService(queries, app.db)
+	authService := auth.NewService(queries, app.db, app.logger)
 	authHandler := auth.NewHandler(authService)
-	authHandler.Mount(r)
+	r.Route("/auth", func(r chi.Router) {
+		authHandler.Mount(r)
+	})
 
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("all good"))
@@ -54,8 +57,8 @@ func (app *application) run(h http.Handler) error {
 
 type application struct {
 	config config
-	// logger
-	db *pgx.Conn
+	logger *slog.Logger
+	db     *pgx.Conn
 }
 
 type config struct {

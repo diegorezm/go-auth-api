@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
     email TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
 
-    name TEXT,
+    name TEXT NOT NULL,
     avatar_url TEXT,
 
     is_active BOOLEAN NOT NULL DEFAULT true,

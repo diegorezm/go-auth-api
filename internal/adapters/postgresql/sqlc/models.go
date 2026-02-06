@@ -12,7 +12,7 @@ type User struct {
 	ID           pgtype.UUID        `json:"id"`
 	Email        string             `json:"email"`
 	PasswordHash string             `json:"password_hash"`
-	Name         pgtype.Text        `json:"name"`
+	Name         string             `json:"name"`
 	AvatarUrl    pgtype.Text        `json:"avatar_url"`
 	IsActive     bool               `json:"is_active"`
 	CreatedAt    pgtype.Timestamptz `json:"created_at"`
