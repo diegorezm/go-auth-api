@@ -1,16 +1,44 @@
 package main
 
 import (
-	"net/http"
+	"context"
+	"log/slog"
+	"os"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	"github.com/diegorezm/ticketing/internal/env"
+	"github.com/jackc/pgx/v5"
 )
 
 func main() {
-	r := chi.NewRouter()
-	r.Use(middleware.Logger)
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-	})
-	http.ListenAndServe(":8080", r)
+	ctx := context.Background()
+
+	cfg := config{
+		addr: ":8080",
+		db: dbConfig{
+			dsn: env.GetString("GOOSE_DBSTRING", "host=db user=postgres password=postgres dbname=app sslmode=disable"),
+		},
+	}
+
+	// Logger
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
+
+	// Database
+	conn, err := pgx.Connect(ctx, cfg.db.dsn)
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close(ctx)
+
+	logger.Info("connected to database", "dsn", cfg.db.dsn)
+
+	// Run the app
+	api := application{
+		config: cfg,
+		db:     conn,
+	}
+	if err := api.run(api.mount()); err != nil {
+		slog.Error("server failed to start", "error", err)
+		os.Exit(1)
+	}
 }
