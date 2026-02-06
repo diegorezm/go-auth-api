@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+
+# Air temporary build output
+tmp
+
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go test binaries
+*.test
+
+# Coverage files
+*.out
+
+# Dependency folders (if any frontend exists)
+node_modules
+dist
+build
+
+# IDE / editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docker files themselves (optional)
+docker-compose.yml
+
+# Environment files
+.env
+.env.*
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
